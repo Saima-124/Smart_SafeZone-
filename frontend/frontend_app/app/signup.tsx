@@ -5,10 +5,38 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 export default function SignUpScreen() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [userType, setUserType] = useState("Student");
   const [agreed, setAgreed] = useState(false);   // <-- checkbox state
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  const handleCreateAccount = () => {
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      alert("Please fill all fields before creating an account.");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (!agreed) {
+      alert("You must agree to the terms to continue.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      alert("Account created successfully. Please sign in.");
+      router.push("/login");
+    }, 400);
+  };
 
   return (
     <View style={styles.container}>
@@ -16,14 +44,31 @@ export default function SignUpScreen() {
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.subtitle}>Join SafeZone for better safety</Text>
 
-      <TextInput style={styles.input} placeholder="Enter your full name" />
-      <TextInput style={styles.input} placeholder="Enter email or phone number" />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your full name"
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter email"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoCorrect={false}
+        value={email}
+        onChangeText={setEmail}
+      />
 
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
           placeholder="Enter password"
           secureTextEntry={!passwordVisible}
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
           <MaterialIcons
@@ -67,10 +112,13 @@ export default function SignUpScreen() {
 
       {/* Create Account Button */}
       <TouchableOpacity 
-        style={[styles.signInButton, !agreed && { opacity: 0.5 }]} 
-        disabled={!agreed}   // disable until checked
+        style={[styles.signInButton, (!agreed || isSubmitting) && { opacity: 0.5 }]} 
+        disabled={!agreed || isSubmitting}
+        onPress={handleCreateAccount}
       >
-        <Text style={styles.signInText}>Create Account</Text>
+        <Text style={styles.signInText}>
+          {isSubmitting ? "Creating an account..." : "Create Account"}
+        </Text>
       </TouchableOpacity>
 
       {/* Navigate back to Login */}
