@@ -1,30 +1,30 @@
+// styles/commonStyles.ts
 import { StyleSheet } from "react-native";
 
 export const commonStyles = StyleSheet.create({
-  // ----- Common container -----
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    paddingHorizontal: 20,
+    backgroundColor: "#fff", // ছবির মতো সাদা ব্যাকগ্রাউন্ড
+    justifyContent: "space-between",
   },
-
-  // ----- Header -----
   headerBar: {
     height: 60,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#4CAF50", // উপরের সবুজ বার
     justifyContent: "center",
     alignItems: "center",
   },
   headerText: {
-    color: "#4CAF50",
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  headerTitle: {
+    color: "#0a4f0b",
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 8,
   },
-
-  // ----- Onboarding content -----
   content: {
     flex: 1,
     justifyContent: "center",
@@ -35,7 +35,7 @@ export const commonStyles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: "#E8F5E9",
+    backgroundColor: "#E8F5E9", // হালকা সবুজ সার্কেল
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
@@ -53,22 +53,18 @@ export const commonStyles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
   },
-
-  // ----- Buttons -----
   button: {
     backgroundColor: "#4CAF50",
-    paddingVertical: 12,
+    paddingHorizontal: 70,
+    paddingVertical: 10,
     borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
+    alignSelf: "center",
+    marginBottom: 20,
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 16,
   },
-
-  // ----- Pagination dots -----
   dots: {
     flexDirection: "row",
     justifyContent: "center",
@@ -81,90 +77,4 @@ export const commonStyles = StyleSheet.create({
     marginHorizontal: 4,
   },
 
-  // ----- Login/Signup extra -----
-  subText: {
-    fontSize: 14,
-    color: "#555",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 12,
-    fontSize: 14,
-  },
-  googleButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingVertical: 10,
-    marginTop: 15,
-  },
-  googleText: {
-    fontSize: 14,
-    color: "#333",
-    fontWeight: "500",
-  },
-  linkText: {
-    fontSize: 14,
-    color: "#4CAF50",
-    textAlign: "center",
-    marginTop: 15,
-  },
-  linkSmall: {
-    fontSize: 13,
-    color: "#4CAF50",
-    textAlign: "right",
-    marginTop: 8,
-  },
-  userTypeContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginVertical: 15,
-  },
-  userTypeSelected: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#4CAF50",
-    backgroundColor: "#E8F5E9",
-    borderRadius: 8,
-    padding: 10,
-  },
-  userTypeUnselected: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-
-  // ----- Password field with eye toggle -----
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginBottom: 12,
-  },
-  passwordInput: {
-    flex: 1,
-    paddingVertical: 10,
-    fontSize: 14,
-  },
 });

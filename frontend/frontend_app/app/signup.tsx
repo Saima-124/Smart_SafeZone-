@@ -1,91 +1,104 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+// SignUpScreen.tsx
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons"; 
 import { useRouter } from "expo-router";
-import { commonStyles } from "../styles/commonStyles";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
 
-export default function SignupPage() {
+export default function SignUpScreen() {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [userType, setUserType] = useState("Student");
+  const [agreed, setAgreed] = useState(false);   // <-- checkbox state
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View style={commonStyles.container}>
-      {/* Logo */}
-      <Ionicons
-        name="shield-checkmark"
-        size={50}
-        color="#4CAF50"
-        style={{ alignSelf: "center", marginBottom: 10 }}
-      />
+    <View style={styles.container}>
+      <MaterialIcons name="security" size={64} color="#2e7d32" />
+      <Text style={styles.title}>Create Account</Text>
+      <Text style={styles.subtitle}>Join SafeZone for better safety</Text>
 
-      {/* Title */}
-      <Text style={commonStyles.headerText}>Create Account</Text>
-      <Text style={commonStyles.subText}>Join SafeZone for better safety</Text>
+      <TextInput style={styles.input} placeholder="Enter your full name" />
+      <TextInput style={styles.input} placeholder="Enter email or phone number" />
 
-      {/* Full Name */}
-      <TextInput style={commonStyles.input} placeholder="Enter your full name" />
-
-      {/* Email/Phone */}
-      <TextInput style={commonStyles.input} placeholder="Enter email or phone number" />
-
-      {/* Password with eye toggle */}
-      <View style={commonStyles.passwordContainer}>
+      <View style={styles.passwordContainer}>
         <TextInput
-          style={commonStyles.passwordInput}
+          style={styles.passwordInput}
           placeholder="Enter password"
-          secureTextEntry={!showPassword}
+          secureTextEntry={!passwordVisible}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-          <Ionicons
-            name={showPassword ? "eye-outline" : "eye-off-outline"}
-            size={22}
+        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+          <MaterialIcons
+            name={passwordVisible ? "visibility" : "visibility-off"}
+            size={24}
             color="#555"
           />
         </TouchableOpacity>
       </View>
 
-      {/* User Type */}
-      <View style={commonStyles.userTypeContainer}>
-        <TouchableOpacity style={commonStyles.userTypeSelected}>
-          <Ionicons
-            name="school-outline"
-            size={20}
-            color="#4CAF50"
-            style={{ marginRight: 6 }}
-          />
-          <Text>Student</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={commonStyles.userTypeUnselected}>
-          <Ionicons
-            name="people-outline"
-            size={20}
-            color="#333"
-            style={{ marginRight: 6 }}
-          />
-          <Text>Guardian</Text>
-        </TouchableOpacity>
+      {/* User Type Selection */}
+      <View style={styles.userTypeContainer}>
+        {["Student", "Guardian"].map(type => (
+          <TouchableOpacity
+            key={type}
+            style={[
+              styles.userTypeButton,
+              userType === type && styles.userTypeSelected
+            ]}
+            onPress={() => setUserType(type)}
+          >
+            <Text style={styles.userTypeText}>{type}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       {/* Terms Checkbox */}
-      <View style={commonStyles.checkboxContainer}>
-        <Ionicons
-          name="checkbox-outline"
-          size={20}
-          color="#4CAF50"
-          style={{ marginRight: 6 }}
+      <TouchableOpacity 
+        style={styles.checkboxContainer} 
+        onPress={() => setAgreed(!agreed)}
+      >
+        <MaterialIcons 
+          name={agreed ? "check-box" : "check-box-outline-blank"} 
+          size={20} 
+          color={agreed ? "#2e7d32" : "#555"} 
         />
-        <Text>I agree to the Terms of Service and Privacy Policy</Text>
-      </View>
+        <Text style={styles.checkboxText}>
+          I agree to the Terms of Service and Privacy Policy
+        </Text>
+      </TouchableOpacity>
 
       {/* Create Account Button */}
-      <TouchableOpacity style={commonStyles.button}>
-        <Text style={commonStyles.buttonText}>Create Account</Text>
+      <TouchableOpacity 
+        style={[styles.signInButton, !agreed && { opacity: 0.5 }]} 
+        disabled={!agreed}   // disable until checked
+      >
+        <Text style={styles.signInText}>Create Account</Text>
       </TouchableOpacity>
 
-      {/* Already have account */}
-      <TouchableOpacity onPress={() => router.push("./login")}>
-        <Text style={commonStyles.linkText}>Already have an account? Sign In</Text>
-      </TouchableOpacity>
+      {/* Navigate back to Login */}
+      <Text style={styles.signupText}>
+        Already have an account?{" "}
+        <Text style={styles.signupLink} onPress={() => router.push("/login")}>
+          Sign In
+        </Text>
+      </Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex:1, backgroundColor:"#fff", alignItems:"center", justifyContent:"center", paddingHorizontal:20 },
+  title: { fontSize:28, fontWeight:"bold", marginTop:10, color:"#000" },
+  subtitle: { fontSize:14, color:"#555", marginBottom:20 },
+  input: { width:"100%", borderWidth:1, borderColor:"#ccc", borderRadius:8, padding:12, marginBottom:15, fontSize:16 },
+  passwordContainer: { flexDirection:"row", alignItems:"center", borderWidth:1, borderColor:"#ccc", borderRadius:8, paddingHorizontal:12, marginBottom:15, width:"100%" },
+  passwordInput: { flex:1, paddingVertical:12, fontSize:16 },
+  signInButton: { backgroundColor:"#2e7d32", width:"100%", padding:15, borderRadius:8, alignItems:"center", marginBottom:10 },
+  signInText: { color:"#fff", fontSize:16, fontWeight:"bold" },
+  userTypeContainer: { flexDirection:"row", marginBottom:15 },
+  userTypeButton: { borderWidth:1, borderColor:"#ccc", borderRadius:8, padding:10, marginHorizontal:5 },
+  userTypeSelected: { backgroundColor:"#2e7d32" },
+  userTypeText: { color:"#000" },
+  checkboxContainer: { flexDirection:"row", alignItems:"center", marginBottom:20 },
+  checkboxText: { marginLeft:8, color:"#555" },
+  signupText: { fontSize:14, color:"#555" },
+  signupLink: { color:"#2e7d32", fontWeight:"bold" },
+});

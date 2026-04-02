@@ -1,63 +1,167 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
-import { commonStyles } from "../styles/commonStyles";
-import { Ionicons } from "@expo/vector-icons";
-import * as WebBrowser from "expo-web-browser";
-import { useState } from "react";
+// LoginScreen.tsx
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons"; 
+import { AntDesign } from "@expo/vector-icons"; 
+import { useRouter } from "expo-router";   // Expo Router navigation
 
-export default function LoginPage() {
+export default function LoginScreen() {
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleGoogleLogin = async () => {
-    await WebBrowser.openBrowserAsync("https://accounts.google.com/signin/v2/identifier?service=github");
-  };
 
   return (
-    <View style={commonStyles.container}>
-      {/* Logo */}
-      <Ionicons name="shield-checkmark" size={50} color="#4CAF50" style={{ alignSelf: "center", marginBottom: 10 }} />
+    <View style={styles.container}>
+      <MaterialIcons name="security" size={64} color="#2e7d32" />
+      <Text style={styles.title}>Welcome Back</Text>
+      <Text style={styles.subtitle}>Sign in to your SafeZone account</Text>
 
-      <Text style={commonStyles.headerText}>Welcome Back</Text>
-      <Text style={commonStyles.subText}>Sign in to your SafeZone account</Text>
-
-      {/* Email/Phone */}
-      <TextInput style={commonStyles.input} placeholder="Enter email or phone number" />
-
-      {/* Password with eye toggle */}
-      <View style={commonStyles.passwordContainer}>
+      <TextInput style={styles.input} placeholder="Enter email or phone number" />
+      <View style={styles.passwordContainer}>
         <TextInput
-          style={commonStyles.passwordInput}
+          style={styles.passwordInput}
           placeholder="Enter password"
-          secureTextEntry={!showPassword}
+          secureTextEntry={!passwordVisible}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-          <Ionicons name={showPassword ? "eye-outline" : "eye-off-outline"} size={22} color="#555" />
+        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+          <MaterialIcons
+            name={passwordVisible ? "visibility" : "visibility-off"}
+            size={24}
+            color="#555"
+          />
         </TouchableOpacity>
       </View>
 
-      {/* Sign In Button */}
-      <TouchableOpacity style={commonStyles.button}>
-        <Text style={commonStyles.buttonText}>Sign In</Text>
+      <TouchableOpacity style={styles.signInButton}>
+        <Text style={styles.signInText}>Sign In</Text>
       </TouchableOpacity>
 
-      {/* Forgot Password */}
-      <Text style={commonStyles.linkSmall}>Forgot Password?</Text>
-
-      {/* OR Divider */}
-      <Text style={{ textAlign: "center", marginVertical: 10, color: "#777" }}>OR</Text>
-
-      {/* Continue with Google */}
-      <TouchableOpacity style={commonStyles.googleButton} onPress={handleGoogleLogin}>
-        <Ionicons name="logo-google" size={22} color="#DB4437" style={{ marginRight: 8 }} />
-        <Text style={commonStyles.googleText}>Continue with Google</Text>
+      <TouchableOpacity>
+        <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      {/* Sign Up Link */}
-      <TouchableOpacity onPress={() => router.push("./signup")}>
-        <Text style={commonStyles.linkText}>Don’t have an account? Sign Up</Text>
+      <View style={styles.dividerContainer}>
+        <View style={styles.divider} />
+        <Text style={styles.orText}>OR</Text>
+        <View style={styles.divider} />
+      </View>
+
+      <TouchableOpacity style={styles.googleButton}>
+        <AntDesign name="google" size={20} color="red" />
+        <Text style={styles.googleText}>Continue with Google</Text>
       </TouchableOpacity>
+
+      {/* Navigate to SignUp */}
+      <Text style={styles.signupText}>
+        Don’t have an account?{" "}
+        <Text style={styles.signupLink} onPress={() => router.push("/signup")}>
+          Sign Up
+        </Text>
+      </Text>
     </View>
   );
 }
 
+// (styles same as before)
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginTop: 10,
+    color: "#000",
+  },
+  subtitle: {
+    fontSize: 14,
+    color: "#555",
+    marginBottom: 20,
+  },
+  input: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 15,
+    fontSize: 16,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    marginBottom: 15,
+    width: "100%",
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 16,
+  },
+  signInButton: {
+    backgroundColor: "#2e7d32",
+    width: "100%",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  signInText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  forgotPassword: {
+    color: "#2e7d32",
+    marginBottom: 20,
+  },
+  dividerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+    width: "100%",
+  },
+  divider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#ccc",
+  },
+  orText: {
+    marginHorizontal: 10,
+    color: "#555",
+    fontWeight: "bold",
+  },
+  googleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 12,
+    width: "100%",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  googleText: {
+    marginLeft: 8,
+    fontSize: 16,
+    color: "#000",
+  },
+  signupText: {
+    fontSize: 14,
+    color: "#555",
+  },
+  signupLink: {
+    color: "#2e7d32",
+    fontWeight: "bold",
+  },
+});
